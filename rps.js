@@ -3,36 +3,53 @@ const rock = document.querySelector("#rock");
 const paper = document.querySelector("#paper");
 const scissors = document.getElementById("scissors"); // this might be considered deprecated
 
+const eid = document.querySelector("#eid");
+const pid = document.querySelector("#pid");
+const comment = document.querySelector("#comment");
+const winner = document.querySelector("#winner");
+
+const reset = document.querySelector("#reset");
+
+reset.addEventListener("click", function() {
+    playerHealth = 100;
+    pid.textContent = `${playerHealth}%`;
+    enemyHealth = 100;
+    eid.textContent = `${enemyHealth}%`;
+    winner.textContent = "Well, you're here to fight to the death.";
+    comment.textContent = "Better make sure it's a good one.";
+    pid.style.color = "white";
+    eid.style.color = "white";
+});
+
+
 let choice;
-playerScore = 0;
-computerScore = 0;
+playerHealth = 100;
+pid.textContent = `${playerHealth}%`;
+enemyHealth = 100;
+eid.textContent = `${enemyHealth}%`;
+
+
 
 rock.addEventListener("click", function() {
     choice = "rock";
-    console.log("You picked Rock");
     round();
 });
 paper.addEventListener("click", function() {
     choice = "paper";
-    console.log("You picked Paper");
     round();
 });
 scissors.addEventListener("click", function() {
     choice = "scissors";
-    console.log("You picked Scissors");
     round();
 });
 
 function computerChoice() {
     let number = Math.floor(Math.random() * 3);
     if (number == 0) {
-        console.log("Computer picked Rock");
         return "rock";
     } else if (number == 1) {
-        console.log("Computer picked Paper");
         return "paper";
     } else {
-        console.log("Computer picked Scissors");s
         return "scissors";
     }
 }
@@ -41,20 +58,28 @@ function round() {
     let cC = computerChoice();
 
     if ((choice == "rock" && cC == "rock") || (choice == "scissors" && cC == "scissors") || (choice == "paper" && cC == "paper")) {
-        console.log("It's a draw!");
+        comment.textContent = "That one was a draw. No one loses any health.";
     } else if ((choice == "rock" && cC == "scissors") || (choice == "scissors" && cC == "paper") || (choice == "paper" && cC == "rock")) {
-        console.log("You won that round!");
-        playerScore++;
+        comment.textContent = `You picked ${choice}, they picked ${cC}, so you Won that round!`;
+        enemyHealth -= 20;
+        eid.textContent = `${enemyHealth}%`;
     } else if ((choice == "rock" && cC == "paper") || (choice == "scissors" && cC == "rock") || (choice == "paper" && cC == "scissors")) {
-        console.log("Oh mate, you lost!");
-        computerScore++;
+        comment.textContent = `You picked ${choice}, they picked ${cC}, so you lost that one.`;
+        playerHealth -= 20;
+        pid.textContent = `${playerHealth}%`;
     }
+
+    checkHealth();
 }
 
-if (playerScore > computerScore) {
-    console.log(`The Game goes to you! ${playerScore} to ${computerScore}`);
-} else if (playerScore < computerScore) {
-    console.log(`The Computer beat you, ${computerScore} to ${playerScore}`);
-} else {
-    console.log("Well, that's a draw!");
+function checkHealth() {
+    if (playerHealth === 0) {
+        winner.textContent = "And now you're dead. Game Over.";
+        pid.style.color = "red";
+    } else if (enemyHealth === 0) {
+        winner.textContent = "Congratulations! You survived to fight another bad guy.";
+        eid.style.color = "red";
+    } else {
+        winner.textContent = "You're going to have to do better than that if if you want to come out of this alive!";
+    }    
 }
