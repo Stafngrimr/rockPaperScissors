@@ -1,13 +1,47 @@
-// Rock Paper Scissors game
-/* This is also a comment */
+// There's always more than one way to select things..
+const rock = document.querySelector("#rock");
+const paper = document.querySelector("#paper");
+const scissors = document.getElementById("scissors"); // this might be considered deprecated
 
-console.log("Welcome to RPS");
+const eid = document.querySelector("#eid");
+const pid = document.querySelector("#pid");
+const comment = document.querySelector("#comment");
+const winner = document.querySelector("#winner");
 
-function capitalise(s) {
-    let first = s[0].toUpperCase();
-    s = s.replace(/^[a-zA-Z]/i, first);
-    return s;
-  }
+const reset = document.querySelector("#reset");
+
+reset.addEventListener("click", function() {
+    playerHealth = 100;
+    pid.textContent = `${playerHealth}%`;
+    enemyHealth = 100;
+    eid.textContent = `${enemyHealth}%`;
+    winner.textContent = "Well, you're here to fight to the death.";
+    comment.textContent = "Better make sure it's a good one.";
+    pid.style.color = "white";
+    eid.style.color = "white";
+});
+
+
+let choice;
+playerHealth = 100;
+pid.textContent = `${playerHealth}%`;
+enemyHealth = 100;
+eid.textContent = `${enemyHealth}%`;
+
+
+
+rock.addEventListener("click", function() {
+    choice = "rock";
+    round();
+});
+paper.addEventListener("click", function() {
+    choice = "paper";
+    round();
+});
+scissors.addEventListener("click", function() {
+    choice = "scissors";
+    round();
+});
 
 function computerChoice() {
     let number = Math.floor(Math.random() * 3);
@@ -19,61 +53,33 @@ function computerChoice() {
         return "scissors";
     }
 }
-
-function playerChoice() {
-    let choice = prompt("Rock, Paper or Scissors?");
-    choice = choice.toLowerCase();
-    if (choice == "rock") {
-        return "rock";
-    } else if (choice == "paper") {
-        return "paper";
-    } else if (choice == "scissors") {
-        return "scissors"
-    } else {
-        console.log("That's not how the game works. Start over.")
-        throw "";
-    }
-}
-
-
     
 function round() {
-    let pC = playerChoice();
     let cC = computerChoice();
 
-    if ((pC == "rock" && cC == "rock") || (pC == "scissors" && cC == "scissors") || (pC == "paper" && cC == "paper")) {
-        console.log("It's a draw!");
-    } else if ((pC == "rock" && cC == "scissors") || (pC == "scissors" && cC == "paper") || (pC == "paper" && cC == "rock")) {
-        return 0;
-    } else if ((pC == "rock" && cC == "paper") || (pC == "scissors" && cC == "rock") || (pC == "paper" && cC == "scissors")) {
-        return 1;
+    if ((choice == "rock" && cC == "rock") || (choice == "scissors" && cC == "scissors") || (choice == "paper" && cC == "paper")) {
+        comment.textContent = "That one was a draw. No one loses any health.";
+    } else if ((choice == "rock" && cC == "scissors") || (choice == "scissors" && cC == "paper") || (choice == "paper" && cC == "rock")) {
+        comment.textContent = `You picked ${choice}, they picked ${cC}, so you Won that round!`;
+        enemyHealth -= 20;
+        eid.textContent = `${enemyHealth}%`;
+    } else if ((choice == "rock" && cC == "paper") || (choice == "scissors" && cC == "rock") || (choice == "paper" && cC == "scissors")) {
+        comment.textContent = `You picked ${choice}, they picked ${cC}, so you lost that one.`;
+        playerHealth -= 20;
+        pid.textContent = `${playerHealth}%`;
     }
+
+    checkHealth();
 }
 
-function game() {
-    playerScore = 0;
-    computerScore = 0;
-
-    for (let i = 0; i < 5; i++) {
-        let winner = round();
-
-        if (winner == 0) {
-            console.log("You Win!");
-            playerScore++;
-        } else if (winner == 1) {
-            console.log("Oh mate, you lost!");
-            computerScore++;
-        }
-    }
-
-    if (playerScore > computerScore) {
-        console.log(`The Game goes to you! ${playerScore} to ${computerScore}`);
-    } else if (playerScore < computerScore) {
-        console.log(`The Computer beat you, ${computerScore} to ${playerScore}`);
+function checkHealth() {
+    if (playerHealth === 0) {
+        winner.textContent = "And now you're dead. Game Over.";
+        pid.style.color = "red";
+    } else if (enemyHealth === 0) {
+        winner.textContent = "Congratulations! You survived to fight another bad guy.";
+        eid.style.color = "red";
     } else {
-        console.log("Well, that's a draw!");
-    }
+        winner.textContent = "You're going to have to do better than that if if you want to come out of this alive!";
+    }    
 }
-
-game();
-
