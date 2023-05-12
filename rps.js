@@ -1,79 +1,60 @@
-// Rock Paper Scissors game
-/* This is also a comment */
+// There's always more than one way to select things..
+const rock = document.querySelector("#rock");
+const paper = document.querySelector("#paper");
+const scissors = document.getElementById("scissors"); // this might be considered deprecated
 
-console.log("Welcome to RPS");
+let choice;
+playerScore = 0;
+computerScore = 0;
 
-function capitalise(s) {
-    let first = s[0].toUpperCase();
-    s = s.replace(/^[a-zA-Z]/i, first);
-    return s;
-  }
+rock.addEventListener("click", function() {
+    choice = "rock";
+    console.log("You picked Rock");
+    round();
+});
+paper.addEventListener("click", function() {
+    choice = "paper";
+    console.log("You picked Paper");
+    round();
+});
+scissors.addEventListener("click", function() {
+    choice = "scissors";
+    console.log("You picked Scissors");
+    round();
+});
 
 function computerChoice() {
     let number = Math.floor(Math.random() * 3);
     if (number == 0) {
+        console.log("Computer picked Rock");
         return "rock";
     } else if (number == 1) {
+        console.log("Computer picked Paper");
         return "paper";
     } else {
+        console.log("Computer picked Scissors");s
         return "scissors";
     }
 }
-
-function playerChoice() {
-    let choice = prompt("Rock, Paper or Scissors?");
-    choice = choice.toLowerCase();
-    if (choice == "rock") {
-        return "rock";
-    } else if (choice == "paper") {
-        return "paper";
-    } else if (choice == "scissors") {
-        return "scissors"
-    } else {
-        console.log("That's not how the game works. Start over.")
-        throw "";
-    }
-}
-
-
     
 function round() {
-    let pC = playerChoice();
     let cC = computerChoice();
 
-    if ((pC == "rock" && cC == "rock") || (pC == "scissors" && cC == "scissors") || (pC == "paper" && cC == "paper")) {
+    if ((choice == "rock" && cC == "rock") || (choice == "scissors" && cC == "scissors") || (choice == "paper" && cC == "paper")) {
         console.log("It's a draw!");
-    } else if ((pC == "rock" && cC == "scissors") || (pC == "scissors" && cC == "paper") || (pC == "paper" && cC == "rock")) {
-        return 0;
-    } else if ((pC == "rock" && cC == "paper") || (pC == "scissors" && cC == "rock") || (pC == "paper" && cC == "scissors")) {
-        return 1;
+    } else if ((choice == "rock" && cC == "scissors") || (choice == "scissors" && cC == "paper") || (choice == "paper" && cC == "rock")) {
+        console.log("You won that round!");
+        playerScore++;
+    } else if ((choice == "rock" && cC == "paper") || (choice == "scissors" && cC == "rock") || (choice == "paper" && cC == "scissors")) {
+        console.log("Oh mate, you lost!");
+        computerScore++;
     }
 }
 
-function game() {
-    playerScore = 0;
-    computerScore = 0;
-
-    for (let i = 0; i < 5; i++) {
-        let winner = round();
-
-        if (winner == 0) {
-            console.log("You Win!");
-            playerScore++;
-        } else if (winner == 1) {
-            console.log("Oh mate, you lost!");
-            computerScore++;
-        }
-    }
-
-    if (playerScore > computerScore) {
-        console.log(`The Game goes to you! ${playerScore} to ${computerScore}`);
-    } else if (playerScore < computerScore) {
-        console.log(`The Computer beat you, ${computerScore} to ${playerScore}`);
-    } else {
-        console.log("Well, that's a draw!");
-    }
+if (playerScore > computerScore) {
+    console.log(`The Game goes to you! ${playerScore} to ${computerScore}`);
+} else if (playerScore < computerScore) {
+    console.log(`The Computer beat you, ${computerScore} to ${playerScore}`);
+} else {
+    console.log("Well, that's a draw!");
 }
-
-game();
-
