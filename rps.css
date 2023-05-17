@@ -82,3 +82,9 @@ p {
     background-color: #c5c095;
     color: black;
 }
+
+#staf {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+}
