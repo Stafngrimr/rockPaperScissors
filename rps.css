@@ -83,8 +83,25 @@ p {
     color: black;
 }
 
-#staf {
+footer {
+    display: flex;
+    flex-direction: row;
     position: absolute;
     bottom: 5px;
     right: 5px;
+    align-items: center;
+}
+
+footer a {
+    color: white;
+}
+
+#github img{
+    height: 23px;
+    width: 23px;
+	margin-right: 10px;
+}
+
+#github img:hover {
+    transform: scale(1.3);
 }
